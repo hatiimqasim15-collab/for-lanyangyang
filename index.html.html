@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#090112" />
+  <title>给懒羊羊的心动宇宙</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: "Microsoft YaHei", "PingFang SC", "Helvetica Neue", Arial, sans-serif;
+      background: #05010a;
+      color: #fff;
+      touch-action: manipulation;
+    }
+
+    body {
+      cursor: pointer;
+    }
+
+    .app {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      height: 100dvh;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 22% 18%, rgba(130, 85, 255, 0.34), transparent 32%),
+        radial-gradient(circle at 80% 76%, rgba(255, 65, 150, 0.30), transparent 34%),
+        radial-gradient(circle at 50% 50%, rgba(255, 219, 241, 0.12), transparent 38%),
+        linear-gradient(135deg, #04010a 0%, #140322 46%, #030108 100%);
+    }
+
+    canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .scene {
+      position: absolute;
+      inset: 0;
+      transition:
+        opacity 1s ease,
+        transform 1s ease,
+        filter 1s ease;
+    }
+
+    .scene-one {
+      z-index: 8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .scene-one.leave {
+      opacity: 0;
+      transform: scale(1.12);
+      filter: blur(18px);
+      pointer-events: none;
+    }
+
+    .scene-two {
+      z-index: 5;
+      opacity: 0;
+      transform: scale(0.96);
+      filter: blur(12px);
+      pointer-events: none;
+    }
+
+    .scene-two.show {
+      opacity: 1;
+      transform: scale(1);
+      filter: blur(0);
+      pointer-events: auto;
+    }
+
+    .aurora {
+      position: absolute;
+      inset: -25%;
+      background:
+        conic-gradient(
+          from 140deg at 50% 50%,
+          rgba(255, 70, 155, 0.20),
+          rgba(84, 124, 255, 0.17),
+          rgba(255, 226, 244, 0.18),
+          rgba(151, 89, 255, 0.18),
+          rgba(255, 70, 155, 0.20)
+        );
+      filter: blur(58px);
+      animation: auroraMove 9s linear infinite;
+      opacity: 0.72;
+      pointer-events: none;
+    }
+
+    .open-card {
+      position: relative;
+      width: min(90vw, 560px);
+      padding: clamp(30px, 7vw, 44px) clamp(22px, 6vw, 36px);
+      border-radius: 32px;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.055)),
+        radial-gradient(circle at 50% 0%, rgba(255, 91, 163, 0.26), transparent 58%);
+      box-shadow:
+        0 26px 90px rgba(0, 0, 0, 0.48),
+        inset 0 0 42px rgba(255, 255, 255, 0.055),
+        0 0 70px rgba(255, 68, 150, 0.30);
+      backdrop-filter: blur(18px);
+      text-align: center;
+      overflow: hidden;
+      animation: cardFloat 4s ease-in-out infinite;
+    }
+
+    .open-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(
+          115deg,
+          transparent 0%,
+          transparent 34%,
+          rgba(255, 255, 255, 0.28) 46%,
+          transparent 58%,
+          transparent 100%
+        );
+      transform: translateX(-120%);
+      animation: cardShine 4.2s ease-in-out infinite;
+    }
+
+    .seal {
+      position: relative;
+      width: clamp(96px, 28vw, 126px);
+      height: clamp(96px, 28vw, 126px);
+      margin: 0 auto 22px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(circle, rgba(255, 255, 255, 0.96), rgba(255, 210, 230, 0.72) 34%, rgba(255, 60, 145, 0.26) 58%, transparent 74%);
+      box-shadow:
+        0 0 34px rgba(255, 84, 160, 0.85),
+        0 0 92px rgba(255, 84, 160, 0.50);
+    }
+
+    .seal::before,
+    .seal::after {
+      content: "";
+      position: absolute;
+      inset: -12px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 198, 229, 0.42);
+      animation: rotateRing 6s linear infinite;
+    }
+
+    .seal::after {
+      inset: -22px;
+      border-style: dashed;
+      opacity: 0.66;
+      animation-duration: 11s;
+      animation-direction: reverse;
+    }
+
+    .seal-heart {
+      position: relative;
+      width: clamp(40px, 12vw, 52px);
+      height: clamp(40px, 12vw, 52px);
+      background: #ff4c9c;
+      transform: rotate(45deg);
+      box-shadow: 0 0 28px rgba(255, 76, 156, 0.96);
+      animation: heartBeat 1.35s ease-in-out infinite;
+    }
+
+    .seal-heart::before,
+    .seal-heart::after {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: inherit;
+      border-radius: 50%;
+    }
+
+    .seal-heart::before {
+      left: -50%;
+      top: 0;
+    }
+
+    .seal-heart::after {
+      left: 0;
+      top: -50%;
+    }
+
+    .small-label {
+      position: relative;
+      margin: 0 0 13px;
+      font-size: clamp(12px, 3vw, 15px);
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(255, 226, 241, 0.82);
+    }
+
+    .open-title {
+      position: relative;
+      margin: 0;
+      font-size: clamp(34px, 10vw, 64px);
+      line-height: 1.08;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      color: transparent;
+      background: linear-gradient(90deg, #fff, #ffd9ea, #ff5aa6, #fff);
+      background-size: 230% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      animation: textShine 3.4s linear infinite;
+    }
+
+    .open-subtitle {
+      position: relative;
+      margin: 20px auto 0;
+      max-width: 460px;
+      font-size: clamp(15px, 4vw, 20px);
+      line-height: 1.75;
+      color: rgba(255, 237, 246, 0.92);
+    }
+
+    .open-button {
+      position: relative;
+      margin-top: 28px;
+      border: none;
+      outline: none;
+      padding: 15px 30px;
+      min-width: 168px;
+      border-radius: 999px;
+      color: #fff;
+      font-size: clamp(15px, 4vw, 17px);
+      letter-spacing: 0.08em;
+      background: linear-gradient(135deg, #ff4b9b, #8e67ff, #ff83c1);
+      background-size: 220% auto;
+      box-shadow:
+        0 14px 34px rgba(255, 72, 153, 0.38),
+        0 0 42px rgba(255, 72, 153, 0.30);
+      cursor: pointer;
+      animation: buttonGlow 2.4s ease-in-out infinite;
+    }
+
+    .open-tip {
+      position: relative;
+      margin-top: 16px;
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.58);
+    }
+
+    .main-content {
+      position: absolute;
+      inset: 0;
+      z-index: 8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: clamp(16px, 4vw, 28px);
+      pointer-events: none;
+    }
+
+    .poem-card {
+      position: relative;
+      width: min(92vw, 850px);
+      min-height: min(70vh, 470px);
+      padding: clamp(28px, 6vw, 54px) clamp(22px, 6vw, 56px);
+      border-radius: clamp(26px, 7vw, 38px);
+      text-align: center;
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.13), rgba(255, 255, 255, 0.045)),
+        radial-gradient(circle at 50% 0%, rgba(255, 92, 166, 0.20), transparent 62%);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      backdrop-filter: blur(8px);
+      box-shadow:
+        0 30px 100px rgba(0, 0, 0, 0.40),
+        0 0 100px rgba(255, 67, 145, 0.22);
+      overflow: hidden;
+    }
+
+    .poem-card::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 46%;
+      width: min(78vw, 520px);
+      height: min(78vw, 520px);
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      border: 1px solid rgba(255, 211, 234, 0.18);
+      box-shadow:
+        0 0 28px rgba(255, 97, 170, 0.18),
+        inset 0 0 36px rgba(255, 97, 170, 0.10);
+      animation: rotateRing 18s linear infinite;
+      pointer-events: none;
+    }
+
+    .poem-card::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 46%;
+      width: min(66vw, 430px);
+      height: min(66vw, 430px);
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      border: 1px dashed rgba(165, 126, 255, 0.24);
+      animation: rotateRing 13s linear infinite reverse;
+      pointer-events: none;
+    }
+
+    .main-title {
+      position: relative;
+      z-index: 2;
+      margin: 0 0 22px;
+      font-size: clamp(34px, 11vw, 76px);
+      line-height: 1.08;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      color: transparent;
+      background: linear-gradient(90deg, #fff, #ffdeec, #ff5da9, #ffffff);
+      background-size: 250% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      animation: textShine 3.4s linear infinite;
+      text-shadow: 0 0 42px rgba(255, 76, 156, 0.24);
+    }
+
+    .poem {
+      position: relative;
+      z-index: 2;
+      min-height: 176px;
+      margin: 0 auto;
+      max-width: 760px;
+      font-size: clamp(20px, 5.4vw, 34px);
+      line-height: 1.58;
+      font-weight: 600;
+      color: #fff1f7;
+      text-shadow:
+        0 0 18px rgba(255, 78, 156, 0.78),
+        0 0 42px rgba(255, 78, 156, 0.28);
+      white-space: pre-wrap;
+    }
+
+    .signature {
+      position: relative;
+      z-index: 2;
+      margin-top: 24px;
+      font-size: clamp(13px, 3.2vw, 18px);
+      letter-spacing: 0.12em;
+      color: rgba(255, 221, 237, 0.82);
+      opacity: 0;
+      transform: translateY(12px);
+      transition: 0.8s ease;
+    }
+
+    .signature.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .bottom-hint {
+      position: absolute;
+      left: 50%;
+      bottom: max(18px, env(safe-area-inset-bottom));
+      z-index: 12;
+      width: max-content;
+      max-width: 88vw;
+      transform: translateX(-50%);
+      color: rgba(255, 255, 255, 0.66);
+      font-size: 13px;
+      letter-spacing: 0.06em;
+      text-align: center;
+      opacity: 0;
+      transition: 0.8s ease 1.5s;
+      pointer-events: none;
+    }
+
+    .bottom-hint.show {
+      opacity: 1;
+    }
+
+    @keyframes auroraMove {
+      0% {
+        transform: rotate(0deg) scale(1);
+      }
+
+      50% {
+        transform: rotate(180deg) scale(1.08);
+      }
+
+      100% {
+        transform: rotate(360deg) scale(1);
+      }
+    }
+
+    @keyframes cardFloat {
+      0%,
+      100% {
+        transform: translateY(0) rotateX(0deg) rotateY(0deg);
+      }
+
+      50% {
+        transform: translateY(-10px) rotateX(2deg) rotateY(-2deg);
+      }
+    }
+
+    @keyframes cardShine {
+      0%,
+      38% {
+        transform: translateX(-120%);
+      }
+
+      66%,
+      100% {
+        transform: translateX(120%);
+      }
+    }
+
+    @keyframes heartBeat {
+      0%,
+      100% {
+        transform: rotate(45deg) scale(0.90);
+      }
+
+      45% {
+        transform: rotate(45deg) scale(1.10);
+      }
+    }
+
+    @keyframes textShine {
+      to {
+        background-position: 250% center;
+      }
+    }
+
+    @keyframes rotateRing {
+      to {
+        transform: translate(-50%, -50%) rotate(360deg);
+      }
+    }
+
+    @keyframes buttonGlow {
+      0%,
+      100% {
+        background-position: 0% center;
+        transform: translateY(0);
+      }
+
+      50% {
+        background-position: 100% center;
+        transform: translateY(-2px);
+      }
+    }
+
+    @media (max-width: 560px) {
+      .scene-one {
+        align-items: center;
+      }
+
+      .open-card {
+        border-radius: 28px;
+      }
+
+      .poem-card {
+        min-height: 66vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .poem {
+        text-align: left;
+        line-height: 1.62;
+      }
+    }
+
+    @media (max-height: 650px) {
+      .seal {
+        width: 86px;
+        height: 86px;
+        margin-bottom: 16px;
+      }
+
+      .seal-heart {
+        width: 36px;
+        height: 36px;
+      }
+
+      .open-card {
+        padding-top: 24px;
+        padding-bottom: 24px;
+      }
+
+      .open-subtitle {
+        margin-top: 14px;
+        line-height: 1.55;
+      }
+
+      .open-button {
+        margin-top: 20px;
+      }
+
+      .poem-card {
+        min-height: 76vh;
+      }
+
+      .main-title {
+        margin-bottom: 14px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+    <canvas id="bgCanvas"></canvas>
+
+    <section class="scene scene-one" id="sceneOne">
+      <div class="aurora"></div>
+
+      <div class="open-card">
+        <div class="seal">
+          <div class="seal-heart"></div>
+        </div>
+
+        <p class="small-label">A LETTER FOR YOU</p>
+        <h1 class="open-title">给懒羊羊</h1>
+
+        <p class="open-subtitle">
+          我做了一个小小的宇宙。<br />
+          点开以后，里面只写给你。
+        </p>
+
+        <button class="open-button" id="openBtn">点开这封信</button>
+        <div class="open-tip">手机打开也可以，建议竖屏观看</div>
+      </div>
+    </section>
+
+    <section class="scene scene-two" id="sceneTwo">
+      <canvas id="mainCanvas"></canvas>
+
+      <div class="main-content">
+        <div class="poem-card">
+          <h2 class="main-title">懒羊羊</h2>
+          <div class="poem" id="poem"></div>
+          <div class="signature" id="signature">From the one who wants to walk beside you.</div>
+        </div>
+      </div>
+
+      <div class="bottom-hint" id="bottomHint">轻点屏幕，会有星光回应你</div>
+    </section>
+  </div>
+
+  <script>
+    /*
+      你主要改这里：
+      TYPE_SPEED：文字速度，数字越小越快。建议 28 到 45。
+      loverName：你对她的称呼
+      poemLines：进入第二幕以后逐句出现的文案
+    */
+    const CONFIG = {
+      loverName: "懒羊羊",
+      TYPE_SPEED: 34,
+      poemLines: [
+        "往后长路，",
+        "我想和你各自挺拔，彼此支撑。",
+        "独立又亲密，",
+        "自由且笃定。",
+        "风来同挡，晴日共赏，",
+        "余生相守。"
+      ]
+    };
+
+    const sceneOne = document.getElementById("sceneOne");
+    const sceneTwo = document.getElementById("sceneTwo");
+    const openBtn = document.getElementById("openBtn");
+    const poem = document.getElementById("poem");
+    const signature = document.getElementById("signature");
+    const bottomHint = document.getElementById("bottomHint");
+
+    let opened = false;
+
+    openBtn.addEventListener("click", openSecondScene);
+    openBtn.addEventListener("touchstart", function (event) {
+      event.preventDefault();
+      openSecondScene();
+    }, { passive: false });
+
+    sceneOne.addEventListener("click", function (event) {
+      if (event.target !== openBtn) {
+        openSecondScene();
+      }
+    });
+
+    function openSecondScene() {
+      if (opened) return;
+      opened = true;
+
+      sceneOne.classList.add("leave");
+      sceneTwo.classList.add("show");
+
+      createOpeningFireworks();
+
+      setTimeout(function () {
+        startPoem();
+      }, 680);
+
+      setTimeout(function () {
+        signature.classList.add("show");
+        bottomHint.classList.add("show");
+      }, 5200);
+    }
+
+    function startPoem() {
+      const fullText = CONFIG.poemLines.join("\n");
+      let index = 0;
+
+      function type() {
+        if (index <= fullText.length) {
+          poem.textContent = fullText.slice(0, index);
+          index++;
+          setTimeout(type, CONFIG.TYPE_SPEED);
+        }
+      }
+
+      type();
+    }
+
+    const DPR = Math.min(window.devicePixelRatio || 1, 2);
+
+    /*
+      第一幕：背景星光
+    */
+    const bgCanvas = document.getElementById("bgCanvas");
+    const bgCtx = bgCanvas.getContext("2d");
+
+    let bgWidth;
+    let bgHeight;
+    let bgStars = [];
+    let bgOrbits = [];
+
+    function setCanvasSize(canvas, ctx) {
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+
+      canvas.width = Math.floor(w * DPR);
+      canvas.height = Math.floor(h * DPR);
+      canvas.style.width = w + "px";
+      canvas.style.height = h + "px";
+
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+
+      return { w, h };
+    }
+
+    function resizeBg() {
+      const size = setCanvasSize(bgCanvas, bgCtx);
+      bgWidth = size.w;
+      bgHeight = size.h;
+
+      bgStars = [];
+      bgOrbits = [];
+
+      const starCount = Math.floor((bgWidth * bgHeight) / 4800);
+
+      for (let i = 0; i < starCount; i++) {
+        bgStars.push({
+          x: Math.random() * bgWidth,
+          y: Math.random() * bgHeight,
+          r: Math.random() * 1.6 + 0.35,
+          alpha: Math.random() * 0.75 + 0.22,
+          twinkle: Math.random() * Math.PI * 2
+        });
+      }
+
+      for (let i = 0; i < 9; i++) {
+        bgOrbits.push({
+          radius: Math.min(bgWidth, bgHeight) * (0.12 + i * 0.052),
+          speed: 0.00028 + i * 0.00005,
+          angle: Math.random() * Math.PI * 2,
+          alpha: 0.09 + i * 0.018
+        });
+      }
+    }
+
+    function drawBg(time) {
+      bgCtx.clearRect(0, 0, bgWidth, bgHeight);
+
+      for (const star of bgStars) {
+        const alpha = star.alpha + Math.sin(time * 0.002 + star.twinkle) * 0.26;
+        bgCtx.beginPath();
+        bgCtx.fillStyle = `rgba(255, 232, 246, ${alpha})`;
+        bgCtx.arc(star.x, star.y, star.r, 0, Math.PI * 2);
+        bgCtx.fill();
+      }
+
+      const cx = bgWidth / 2;
+      const cy = bgHeight / 2;
+
+      bgCtx.save();
+      bgCtx.globalCompositeOperation = "lighter";
+
+      for (const orbit of bgOrbits) {
+        orbit.angle += orbit.speed * 18;
+
+        bgCtx.beginPath();
+        bgCtx.strokeStyle = `rgba(255, 150, 205, ${orbit.alpha})`;
+        bgCtx.lineWidth = 1;
+        bgCtx.ellipse(
+          cx,
+          cy,
+          orbit.radius * 1.36,
+          orbit.radius * 0.46,
+          -0.42,
+          0,
+          Math.PI * 2
+        );
+        bgCtx.stroke();
+
+        const x = cx + Math.cos(orbit.angle) * orbit.radius * 1.36;
+        const y = cy + Math.sin(orbit.angle) * orbit.radius * 0.46;
+
+        bgCtx.beginPath();
+        bgCtx.fillStyle = "rgba(255, 118, 180, 0.78)";
+        bgCtx.shadowColor = "rgba(255, 118, 180, 0.95)";
+        bgCtx.shadowBlur = 16;
+        bgCtx.arc(x, y, 2.3, 0, Math.PI * 2);
+        bgCtx.fill();
+      }
+
+      bgCtx.restore();
+      bgCtx.shadowBlur = 0;
+
+      requestAnimationFrame(drawBg);
+    }
+
+    /*
+      第二幕：旋转星环 + 爱心粒子 + 烟花
+    */
+    const mainCanvas = document.getElementById("mainCanvas");
+    const ctx = mainCanvas.getContext("2d");
+
+    let width;
+    let height;
+    let heartParticles = [];
+    let mainStars = [];
+    let swirlParticles = [];
+    let fireworks = [];
+    let mouse = {
+      x: null,
+      y: null
+    };
+
+    function resizeMain() {
+      const size = setCanvasSize(mainCanvas, ctx);
+      width = size.w;
+      height = size.h;
+
+      createMainStars();
+      createHeartParticles();
+      createSwirlParticles();
+    }
+
+    function createMainStars() {
+      mainStars = [];
+
+      const count = Math.floor((width * height) / 3600);
+
+      for (let i = 0; i < count; i++) {
+        mainStars.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          r: Math.random() * 1.7 + 0.35,
+          alpha: Math.random() * 0.78 + 0.18,
+          twinkle: Math.random() * Math.PI * 2,
+          drift: Math.random() * 0.26 + 0.06
+        });
+      }
+    }
+
+    function heartPoint(t, scale) {
+      const x = 16 * Math.pow(Math.sin(t), 3);
+      const y = -(
+        13 * Math.cos(t) -
+        5 * Math.cos(2 * t) -
+        2 * Math.cos(3 * t) -
+        Math.cos(4 * t)
+      );
+
+      return {
+        x: x * scale,
+        y: y * scale
+      };
+    }
+
+    function createHeartParticles() {
+      heartParticles = [];
+
+      const count = Math.min(1700, Math.floor(width * 1.45));
+      const scale = Math.min(width, height) / 43;
+
+      for (let i = 0; i < count; i++) {
+        const t = Math.random() * Math.PI * 2;
+        const randomScale = scale * (0.70 + Math.random() * 0.44);
+        const p = heartPoint(t, randomScale);
+
+        heartParticles.push({
+          x: width / 2 + (Math.random() - 0.5) * width,
+          y: height / 2 + (Math.random() - 0.5) * height,
+          tx: width / 2 + p.x,
+          ty: height / 2 + p.y,
+          size: Math.random() * 2.5 + 0.65,
+          speed: Math.random() * 0.032 + 0.014,
+          angle: Math.random() * Math.PI * 2,
+          spin: Math.random() * 0.05 + 0.012,
+          hue: 318 + Math.random() * 52,
+          alpha: 0.48 + Math.random() * 0.52
+        });
+      }
+    }
+
+    function createSwirlParticles() {
+      swirlParticles = [];
+
+      const count = 720;
+
+      for (let i = 0; i < count; i++) {
+        swirlParticles.push({
+          radius: Math.min(width, height) * (0.15 + Math.random() * 0.46),
+          angle: Math.random() * Math.PI * 2,
+          speed: (Math.random() * 0.004 + 0.0015) * (Math.random() > 0.5 ? 1 : -1),
+          squash: 0.38 + Math.random() * 0.38,
+          tilt: -0.55 + Math.random() * 1.1,
+          size: Math.random() * 2.1 + 0.55,
+          hue: Math.random() > 0.5 ? 330 + Math.random() * 30 : 250 + Math.random() * 34,
+          alpha: 0.22 + Math.random() * 0.48
+        });
+      }
+    }
+
+    function drawMainStars(time) {
+      for (const star of mainStars) {
+        star.y += star.drift * 0.12;
+
+        if (star.y > height) {
+          star.y = 0;
+          star.x = Math.random() * width;
+        }
+
+        const alpha = star.alpha + Math.sin(time * 0.0025 + star.twinkle) * 0.24;
+
+        ctx.beginPath();
+        ctx.fillStyle = `rgba(255, 238, 248, ${alpha})`;
+        ctx.arc(star.x, star.y, star.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    function drawRotatingSwirls(time) {
+      const cx = width / 2;
+      const cy = height / 2;
+
+      ctx.save();
+      ctx.globalCompositeOperation = "lighter";
+
+      for (let ring = 0; ring < 7; ring++) {
+        const radius = Math.min(width, height) * (0.22 + ring * 0.055);
+        const rotate = time * (0.00024 + ring * 0.000035);
+        const alpha = 0.12 + ring * 0.016;
+
+        ctx.beginPath();
+        ctx.strokeStyle = `rgba(255, ${140 + ring * 12}, 220, ${alpha})`;
+        ctx.lineWidth = ring % 2 === 0 ? 1.4 : 0.8;
+        ctx.ellipse(
+          cx,
+          cy,
+          radius * 1.32,
+          radius * 0.42,
+          rotate,
+          0,
+          Math.PI * 2
+        );
+        ctx.stroke();
+      }
+
+      for (const p of swirlParticles) {
+        p.angle += p.speed;
+        const rotate = time * 0.00034;
+        const x0 = Math.cos(p.angle) * p.radius;
+        const y0 = Math.sin(p.angle) * p.radius * p.squash;
+
+        const x = cx + x0 * Math.cos(rotate + p.tilt) - y0 * Math.sin(rotate + p.tilt);
+        const y = cy + x0 * Math.sin(rotate + p.tilt) + y0 * Math.cos(rotate + p.tilt);
+
+        ctx.beginPath();
+        ctx.fillStyle = `hsla(${p.hue}, 100%, 70%, ${p.alpha})`;
+        ctx.shadowColor = `hsla(${p.hue}, 100%, 70%, 0.9)`;
+        ctx.shadowBlur = 13;
+        ctx.arc(x, y, p.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      ctx.restore();
+      ctx.shadowBlur = 0;
+    }
+
+    function drawHeart(time) {
+      const pulse = 1 + Math.sin(time * 0.004) * 0.055;
+      const rotation = Math.sin(time * 0.0012) * 0.055;
+
+      ctx.save();
+      ctx.globalCompositeOperation = "lighter";
+
+      for (const p of heartParticles) {
+        const cx = width / 2;
+        const cy = height / 2;
+
+        let dx = (p.tx - cx) * pulse;
+        let dy = (p.ty - cy) * pulse;
+
+        const rotatedX = dx * Math.cos(rotation) - dy * Math.sin(rotation);
+        const rotatedY = dx * Math.sin(rotation) + dy * Math.cos(rotation);
+
+        const targetX = cx + rotatedX;
+        const targetY = cy + rotatedY;
+
+        p.x += (targetX - p.x) * p.speed;
+        p.y += (targetY - p.y) * p.speed;
+        p.angle += p.spin;
+
+        let ox = Math.cos(p.angle) * 1.5;
+        let oy = Math.sin(p.angle) * 1.5;
+
+        if (mouse.x !== null && mouse.y !== null) {
+          const mdx = p.x - mouse.x;
+          const mdy = p.y - mouse.y;
+          const distance = Math.sqrt(mdx * mdx + mdy * mdy);
+
+          if (distance > 0 && distance < 115) {
+            const force = (115 - distance) / 115;
+            ox += (mdx / distance) * force * 26;
+            oy += (mdy / distance) * force * 26;
+          }
+        }
+
+        ctx.beginPath();
+        ctx.fillStyle = `hsla(${p.hue}, 100%, 68%, ${p.alpha})`;
+        ctx.shadowColor = `hsla(${p.hue}, 100%, 70%, 0.95)`;
+        ctx.shadowBlur = 16;
+        ctx.arc(p.x + ox, p.y + oy, p.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      ctx.restore();
+      ctx.shadowBlur = 0;
+    }
+
+    function drawFireworks() {
+      ctx.save();
+      ctx.globalCompositeOperation = "lighter";
+
+      for (let i = fireworks.length - 1; i >= 0; i--) {
+        const f = fireworks[i];
+
+        f.x += f.vx;
+        f.y += f.vy;
+        f.vy += 0.018;
+        f.life -= 0.018;
+
+        if (f.life <= 0) {
+          fireworks.splice(i, 1);
+          continue;
+        }
+
+        ctx.beginPath();
+        ctx.fillStyle = `hsla(${f.hue}, 100%, 70%, ${f.life})`;
+        ctx.shadowColor = `hsla(${f.hue}, 100%, 70%, ${f.life})`;
+        ctx.shadowBlur = 18;
+        ctx.arc(f.x, f.y, f.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      ctx.restore();
+      ctx.shadowBlur = 0;
+    }
+
+    function drawMain(time) {
+      ctx.clearRect(0, 0, width, height);
+
+      const gradient = ctx.createRadialGradient(
+        width / 2,
+        height / 2,
+        20,
+        width / 2,
+        height / 2,
+        Math.max(width, height) * 0.72
+      );
+
+      gradient.addColorStop(0, "rgba(255, 64, 150, 0.16)");
+      gradient.addColorStop(0.38, "rgba(120, 75, 255, 0.10)");
+      gradient.addColorStop(1, "rgba(5, 1, 10, 0.78)");
+
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, width, height);
+
+      drawMainStars(time);
+      drawRotatingSwirls(time);
+      drawHeart(time);
+      drawFireworks();
+
+      requestAnimationFrame(drawMain);
+    }
+
+    function addFirework(x, y, count) {
+      for (let i = 0; i < count; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = 1.2 + Math.random() * 4.2;
+
+        fireworks.push({
+          x,
+          y,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+          life: 0.75 + Math.random() * 0.25,
+          size: 1.2 + Math.random() * 2.8,
+          hue: Math.random() > 0.48 ? 320 + Math.random() * 46 : 245 + Math.random() * 46
+        });
+      }
+    }
+
+    function createOpeningFireworks() {
+      const points = [
+        [window.innerWidth * 0.22, window.innerHeight * 0.30],
+        [window.innerWidth * 0.78, window.innerHeight * 0.32],
+        [window.innerWidth * 0.50, window.innerHeight * 0.22],
+        [window.innerWidth * 0.50, window.innerHeight * 0.72]
+      ];
+
+      points.forEach(function (point, index) {
+        setTimeout(function () {
+          addFirework(point[0], point[1], 92);
+        }, index * 220);
+      });
+    }
+
+    function handlePointerMove(event) {
+      const point = event.touches ? event.touches[0] : event;
+      if (!point) return;
+      mouse.x = point.clientX;
+      mouse.y = point.clientY;
+    }
+
+    function handlePointerEnd() {
+      mouse.x = null;
+      mouse.y = null;
+    }
+
+    document.addEventListener("mousemove", handlePointerMove);
+    document.addEventListener("touchmove", handlePointerMove, { passive: true });
+    document.addEventListener("mouseleave", handlePointerEnd);
+    document.addEventListener("touchend", handlePointerEnd);
+
+    sceneTwo.addEventListener("click", function (event) {
+      addFirework(event.clientX, event.clientY, 70);
+    });
+
+    sceneTwo.addEventListener("touchstart", function (event) {
+      const touch = event.touches[0];
+      if (touch) {
+        addFirework(touch.clientX, touch.clientY, 70);
+      }
+    }, { passive: true });
+
+    window.addEventListener("resize", function () {
+      resizeBg();
+      resizeMain();
+    });
+
+    resizeBg();
+    resizeMain();
+
+    requestAnimationFrame(drawBg);
+    requestAnimationFrame(drawMain);
+  </script>
+</body>
+</html>
