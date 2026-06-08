@@ -7,13 +7,6 @@
   <title>给懒羊羊的一封信</title>
 
   <style>
-    :root {
-      --pink: #ff4fa3;
-      --soft-pink: #ffd9eb;
-      --purple: #8c63ff;
-      --deep: #07010f;
-    }
-
     * {
       box-sizing: border-box;
       -webkit-tap-highlight-color: transparent;
@@ -25,7 +18,7 @@
       width: 100%;
       height: 100%;
       overflow: hidden;
-      background: var(--deep);
+      background: #05010d;
       color: #fff;
       font-family: "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
       touch-action: manipulation;
@@ -38,10 +31,10 @@
       height: 100dvh;
       overflow: hidden;
       background:
-        radial-gradient(circle at 18% 16%, rgba(140, 99, 255, 0.35), transparent 32%),
-        radial-gradient(circle at 82% 78%, rgba(255, 79, 163, 0.32), transparent 34%),
-        radial-gradient(circle at 50% 50%, rgba(255, 220, 239, 0.10), transparent 42%),
-        linear-gradient(135deg, #05000b 0%, #150320 52%, #040008 100%);
+        radial-gradient(circle at 20% 18%, rgba(132, 86, 255, .25), transparent 34%),
+        radial-gradient(circle at 82% 76%, rgba(255, 72, 160, .26), transparent 36%),
+        radial-gradient(circle at 50% 42%, rgba(255, 220, 242, .10), transparent 36%),
+        linear-gradient(180deg, #07010f 0%, #12031d 48%, #030009 100%);
     }
 
     canvas {
@@ -55,7 +48,7 @@
     .scene {
       position: absolute;
       inset: 0;
-      transition: opacity 0.75s ease, transform 0.75s ease, filter 0.75s ease;
+      transition: opacity .85s ease, transform .85s ease, filter .85s ease;
     }
 
     .scene-one {
@@ -68,14 +61,14 @@
     .scene-one.hide {
       opacity: 0;
       transform: scale(1.06);
-      filter: blur(8px);
+      filter: blur(10px);
       pointer-events: none;
     }
 
     .scene-two {
       z-index: 3;
       opacity: 0;
-      transform: scale(0.98);
+      transform: scale(.98);
       pointer-events: none;
     }
 
@@ -85,44 +78,50 @@
       pointer-events: auto;
     }
 
-    .card {
+    .open-card {
       position: relative;
       width: min(90vw, 520px);
       padding: clamp(30px, 7vw, 44px) clamp(22px, 6vw, 36px);
-      border-radius: 30px;
+      border-radius: 32px;
       text-align: center;
       overflow: hidden;
       background:
-        linear-gradient(135deg, rgba(255,255,255,.16), rgba(255,255,255,.055)),
-        radial-gradient(circle at 50% 0%, rgba(255,79,163,.24), transparent 62%);
+        linear-gradient(135deg, rgba(255,255,255,.16), rgba(255,255,255,.05)),
+        radial-gradient(circle at 50% 0%, rgba(255, 89, 171, .25), transparent 62%);
       border: 1px solid rgba(255,255,255,.20);
-      box-shadow: 0 22px 70px rgba(0,0,0,.48), 0 0 44px rgba(255,79,163,.20);
+      box-shadow:
+        0 26px 80px rgba(0,0,0,.50),
+        0 0 56px rgba(255, 82, 165, .20);
+      backdrop-filter: blur(8px);
     }
 
-    .card::before {
+    .open-card::before {
       content: "";
       position: absolute;
       inset: -45%;
-      background: conic-gradient(from 0deg, transparent, rgba(255,255,255,.18), transparent, rgba(255,79,163,.18), transparent);
+      background: conic-gradient(from 0deg, transparent, rgba(255,255,255,.20), transparent, rgba(255,72,160,.20), transparent);
       animation: turn 8s linear infinite;
-      opacity: .85;
+      opacity: .82;
     }
 
-    .card-inner {
+    .open-inner {
       position: relative;
       z-index: 1;
     }
 
     .seal {
       position: relative;
-      width: clamp(90px, 26vw, 120px);
-      height: clamp(90px, 26vw, 120px);
+      width: clamp(96px, 27vw, 124px);
+      height: clamp(96px, 27vw, 124px);
       margin: 0 auto 22px;
       display: grid;
       place-items: center;
       border-radius: 50%;
-      background: radial-gradient(circle, #fff 0%, #ffd6e8 35%, rgba(255,79,163,.35) 60%, transparent 74%);
-      box-shadow: 0 0 34px rgba(255,79,163,.72);
+      background:
+        radial-gradient(circle, #fff 0%, #ffd7ea 34%, rgba(255,72,160,.35) 62%, transparent 74%);
+      box-shadow:
+        0 0 34px rgba(255,255,255,.42),
+        0 0 64px rgba(255,72,160,.42);
     }
 
     .seal::before,
@@ -130,7 +129,7 @@
       content: "";
       position: absolute;
       border-radius: 50%;
-      border: 1px solid rgba(255,218,236,.58);
+      border: 1px solid rgba(255, 218, 236, .52);
     }
 
     .seal::before {
@@ -139,38 +138,41 @@
     }
 
     .seal::after {
-      inset: -20px;
+      inset: -22px;
       border-style: dashed;
       opacity: .68;
       animation: turn 11s linear infinite reverse;
     }
 
-    .heart-icon {
+    .mini-heart {
       position: relative;
-      width: clamp(38px, 11vw, 52px);
-      height: clamp(38px, 11vw, 52px);
-      background: var(--pink);
+      width: clamp(39px, 11vw, 53px);
+      height: clamp(39px, 11vw, 53px);
+      background: #ff4fa3;
       transform: rotate(45deg);
       animation: beat 1.25s ease-in-out infinite;
-      box-shadow: 0 0 20px rgba(255,79,163,.82);
+      box-shadow:
+        0 0 20px rgba(255,79,163,.82),
+        0 0 34px rgba(255,79,163,.40);
     }
 
-    .heart-icon::before,
-    .heart-icon::after {
+    .mini-heart::before,
+    .mini-heart::after {
       content: "";
       position: absolute;
       width: 100%;
       height: 100%;
       background: inherit;
       border-radius: 50%;
+      box-shadow: inherit;
     }
 
-    .heart-icon::before {
+    .mini-heart::before {
       left: -50%;
       top: 0;
     }
 
-    .heart-icon::after {
+    .mini-heart::after {
       left: 0;
       top: -50%;
     }
@@ -189,7 +191,7 @@
       letter-spacing: .08em;
       line-height: 1.08;
       color: transparent;
-      background: linear-gradient(90deg, #fff, #ffd7e9, #ff5da9, #fff);
+      background: linear-gradient(90deg, #ffffff, #ffd6ea, #ff5da9, #ffffff);
       background-size: 230% auto;
       -webkit-background-clip: text;
       background-clip: text;
@@ -215,11 +217,14 @@
       border: 0;
       border-radius: 999px;
       color: #fff;
+      font-weight: 700;
       font-size: clamp(15px, 4vw, 17px);
       letter-spacing: .08em;
       background: linear-gradient(135deg, #ff4fa3, #8c63ff, #ff86c2);
       background-size: 220% auto;
-      box-shadow: 0 12px 30px rgba(255,79,163,.35);
+      box-shadow:
+        0 12px 30px rgba(255,79,163,.35),
+        0 0 28px rgba(255,255,255,.14);
       cursor: pointer;
       animation: btn 2.4s ease-in-out infinite;
     }
@@ -227,116 +232,7 @@
     .tip {
       margin-top: 15px;
       font-size: 13px;
-      color: rgba(255,255,255,.58);
-    }
-
-    /* 第二幕：中心悬浮旋转爱心 */
-    .heart-stage {
-      position: absolute;
-      left: 50%;
-      top: 34%;
-      z-index: 4;
-      width: min(54vw, 260px);
-      height: min(54vw, 260px);
-      transform: translate(-50%, -50%);
-      display: grid;
-      place-items: center;
-      pointer-events: none;
-      perspective: 900px;
-    }
-
-    .heart-aura {
-      position: absolute;
-      width: 118%;
-      height: 118%;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(255,79,163,.34), rgba(255,79,163,.12) 38%, transparent 70%);
-      filter: blur(10px);
-      animation: auraPulse 2.6s ease-in-out infinite;
-    }
-
-    .heart-ring {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      width: 118%;
-      height: 48%;
-      border-radius: 50%;
-      border: 1px solid rgba(255, 214, 235, .45);
-      transform: translate(-50%, -50%) rotate(-18deg);
-      box-shadow: 0 0 18px rgba(255,79,163,.22);
-      animation: ringSpin 5.5s linear infinite;
-    }
-
-    .heart-ring.r2 {
-      width: 138%;
-      height: 58%;
-      border-style: dashed;
-      border-color: rgba(140, 99, 255, .42);
-      animation-duration: 8s;
-      animation-direction: reverse;
-    }
-
-    .heart-ring.r3 {
-      width: 94%;
-      height: 40%;
-      border-color: rgba(255, 255, 255, .30);
-      animation-duration: 4.4s;
-    }
-
-    .big-heart-box {
-      position: relative;
-      width: 42%;
-      height: 42%;
-      transform-style: preserve-3d;
-      animation: floatSpin 4.8s ease-in-out infinite;
-    }
-
-    .big-heart {
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(circle at 28% 28%, rgba(255,255,255,.92), rgba(255,173,211,.82) 18%, rgba(255,79,163,1) 52%, rgba(190,28,116,1) 100%);
-      transform: rotate(45deg);
-      border-radius: 16%;
-      box-shadow:
-        0 0 18px rgba(255,255,255,.72),
-        0 0 34px rgba(255,79,163,.80),
-        0 0 70px rgba(255,79,163,.46);
-    }
-
-    .big-heart::before,
-    .big-heart::after {
-      content: "";
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background: inherit;
-      border-radius: 50%;
-      box-shadow: inherit;
-    }
-
-    .big-heart::before {
-      left: -50%;
-      top: 0;
-    }
-
-    .big-heart::after {
-      left: 0;
-      top: -50%;
-    }
-
-    .heart-shine {
-      position: absolute;
-      left: 12%;
-      top: 8%;
-      width: 35%;
-      height: 18%;
-      border-radius: 50%;
-      background: rgba(255,255,255,.72);
-      filter: blur(3px);
-      transform: rotate(-18deg);
-      z-index: 2;
+      color: rgba(255,255,255,.56);
     }
 
     .letter-wrap {
@@ -346,43 +242,48 @@
       display: flex;
       align-items: flex-end;
       justify-content: center;
-      padding: 18px 18px max(54px, env(safe-area-inset-bottom));
+      padding: 18px 18px max(48px, env(safe-area-inset-bottom));
       pointer-events: none;
     }
 
     .letter {
       width: min(92vw, 760px);
-      min-height: min(42vh, 330px);
-      padding: clamp(24px, 6vw, 42px) clamp(22px, 6vw, 50px);
-      border-radius: clamp(26px, 7vw, 36px);
+      min-height: min(36vh, 292px);
+      padding: clamp(21px, 5.5vw, 36px) clamp(22px, 6vw, 48px);
+      border-radius: clamp(24px, 7vw, 34px);
       text-align: center;
-      background: rgba(255,255,255,.070);
-      border: 1px solid rgba(255,255,255,.16);
-      box-shadow: 0 22px 70px rgba(0,0,0,.34), 0 0 50px rgba(255,79,163,.14);
+      background: rgba(10, 5, 22, .48);
+      border: 1px solid rgba(255,255,255,.15);
+      box-shadow:
+        0 22px 70px rgba(0,0,0,.36),
+        0 0 50px rgba(255,79,163,.12);
+      backdrop-filter: blur(3px);
     }
 
     .main-title {
-      font-size: clamp(32px, 9vw, 66px);
-      margin-bottom: 14px;
+      font-size: clamp(31px, 8.8vw, 64px);
+      margin-bottom: 11px;
     }
 
     .poem {
-      min-height: 150px;
+      min-height: 138px;
       margin: 0 auto;
       max-width: 680px;
       white-space: pre-wrap;
-      font-size: clamp(19px, 4.9vw, 31px);
-      line-height: 1.58;
+      font-size: clamp(18px, 4.75vw, 30px);
+      line-height: 1.56;
       font-weight: 600;
       color: #fff1f7;
-      text-shadow: 0 0 16px rgba(255,79,163,.72);
+      text-shadow:
+        0 0 13px rgba(255,79,163,.72),
+        0 0 28px rgba(255,79,163,.22);
     }
 
     .signature {
-      margin-top: 16px;
+      margin-top: 14px;
       font-size: clamp(12px, 3vw, 17px);
       letter-spacing: .08em;
-      color: rgba(255,221,237,.80);
+      color: rgba(255,221,237,.74);
       opacity: 0;
       transform: translateY(10px);
       transition: .7s ease;
@@ -396,7 +297,7 @@
     .tap-hint {
       position: absolute;
       left: 50%;
-      bottom: max(14px, env(safe-area-inset-bottom));
+      bottom: max(12px, env(safe-area-inset-bottom));
       z-index: 7;
       transform: translateX(-50%);
       width: max-content;
@@ -404,7 +305,7 @@
       text-align: center;
       font-size: 13px;
       letter-spacing: .06em;
-      color: rgba(255,255,255,.62);
+      color: rgba(255,255,255,.58);
       opacity: 0;
       transition: .7s ease 1.2s;
       pointer-events: none;
@@ -432,76 +333,26 @@
       50% { background-position: 100% center; transform: translateY(-2px); }
     }
 
-    @keyframes auraPulse {
-      0%, 100% { transform: scale(.94); opacity: .68; }
-      50% { transform: scale(1.08); opacity: 1; }
-    }
-
-    @keyframes ringSpin {
-      from { transform: translate(-50%, -50%) rotateX(66deg) rotateZ(0deg); }
-      to { transform: translate(-50%, -50%) rotateX(66deg) rotateZ(360deg); }
-    }
-
-    @keyframes floatSpin {
-      0%, 100% {
-        transform: translateY(0) rotateY(0deg) rotateX(0deg) scale(1);
-      }
-      50% {
-        transform: translateY(-16px) rotateY(180deg) rotateX(8deg) scale(1.06);
-      }
-    }
-
     @media (max-width: 560px) {
-      .heart-stage {
-        top: 32%;
-        width: min(68vw, 250px);
-        height: min(68vw, 250px);
-      }
-
-      .letter {
-        min-height: 43vh;
-      }
-
       .poem {
         text-align: left;
       }
     }
 
     @media (max-height: 680px) {
-      .heart-stage {
-        top: 27%;
-        width: min(48vw, 190px);
-        height: min(48vw, 190px);
-      }
-
       .letter {
-        min-height: 48vh;
-        padding-top: 20px;
-        padding-bottom: 20px;
+        min-height: 39vh;
+        padding-top: 17px;
+        padding-bottom: 17px;
       }
 
       .main-title {
-        margin-bottom: 10px;
+        margin-bottom: 8px;
       }
 
       .poem {
-        min-height: 130px;
-        line-height: 1.45;
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .card::before,
-      .seal::before,
-      .seal::after,
-      .heart-icon,
-      .open-title,
-      .main-title,
-      .open-btn,
-      .heart-aura,
-      .heart-ring,
-      .big-heart-box {
-        animation: none;
+        min-height: 118px;
+        line-height: 1.43;
       }
     }
   </style>
@@ -510,16 +361,16 @@
 <body>
   <main class="page">
     <section class="scene scene-one" id="sceneOne">
-      <div class="card">
-        <div class="card-inner">
+      <div class="open-card">
+        <div class="open-inner">
           <div class="seal">
-            <div class="heart-icon"></div>
+            <div class="mini-heart"></div>
           </div>
           <p class="label">A LETTER FOR YOU</p>
           <h1 class="open-title">给懒羊羊</h1>
           <p class="open-text">
             我做了一个小小的宇宙。<br />
-            点开以后，里面只写给你。
+            点开以后，有一颗心只为你旋转。
           </p>
           <button class="open-btn" id="openBtn">点开这封信</button>
           <div class="tip">手机竖屏打开，效果最好</div>
@@ -529,18 +380,6 @@
 
     <section class="scene scene-two" id="sceneTwo">
       <canvas id="canvas"></canvas>
-
-      <div class="heart-stage">
-        <div class="heart-aura"></div>
-        <div class="heart-ring r1"></div>
-        <div class="heart-ring r2"></div>
-        <div class="heart-ring r3"></div>
-        <div class="big-heart-box">
-          <div class="big-heart">
-            <div class="heart-shine"></div>
-          </div>
-        </div>
-      </div>
 
       <div class="letter-wrap">
         <div class="letter">
@@ -558,11 +397,13 @@
     /*
       自定义区：
       TYPE_SPEED 越小，字出现越快。
-      MAX_DPR 越低越流畅，手机建议 1.25；很卡就改成 1。
+      MAX_DPR 越低越流畅，手机建议 1.2；很卡就改成 1。
+      HEART_POINTS 是 3D 心的点数，手机建议 520-760。
     */
     const CONFIG = {
       TYPE_SPEED: 22,
-      MAX_DPR: 1.25,
+      MAX_DPR: 1.2,
+      HEART_POINTS: 640,
       poemLines: [
         "往后长路，",
         "我想和你各自挺拔，彼此支撑。",
@@ -589,7 +430,10 @@
     let dpr = 1;
 
     let stars = [];
+    let heart = [];
+    let rings = [];
     let sparks = [];
+
     let pointer = { x: -9999, y: -9999, active: false };
 
     function isMobile() {
@@ -608,6 +452,27 @@
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
       makeStars();
+      makeHeart();
+      makeRings();
+    }
+
+    function heart2D(t, scale) {
+      const x = 16 * Math.pow(Math.sin(t), 3);
+      const y = -(
+        13 * Math.cos(t) -
+        5 * Math.cos(2 * t) -
+        2 * Math.cos(3 * t) -
+        Math.cos(4 * t)
+      );
+      return { x: x * scale, y: y * scale };
+    }
+
+    function heartCenter() {
+      return {
+        x: w / 2,
+        y: h * (isMobile() ? 0.30 : 0.34),
+        scale: Math.min(w, h) / (isMobile() ? 42 : 39)
+      };
     }
 
     function makeStars() {
@@ -618,10 +483,56 @@
         stars.push({
           x: Math.random() * w,
           y: Math.random() * h,
-          r: Math.random() * 1.35 + 0.35,
-          a: Math.random() * 0.55 + 0.25,
-          s: Math.random() * 0.32 + 0.12,
-          p: Math.random() * Math.PI * 2
+          r: Math.random() * 1.3 + 0.35,
+          a: Math.random() * 0.55 + 0.22,
+          p: Math.random() * Math.PI * 2,
+          vy: Math.random() * 0.12 + 0.04
+        });
+      }
+    }
+
+    function makeHeart() {
+      heart = [];
+
+      const c = heartCenter();
+      const count = isMobile() ? Math.min(CONFIG.HEART_POINTS, 640) : Math.max(CONFIG.HEART_POINTS, 860);
+
+      for (let i = 0; i < count; i++) {
+        const t = Math.random() * Math.PI * 2;
+
+        /*
+          这里不是一条线，而是很多层不同大小的心叠在一起。
+          z 轴厚度越靠中心越厚，所以旋转时有明显 3D 体积感。
+        */
+        const layer = Math.pow(Math.random(), 0.45);
+        const scale = c.scale * (0.34 + layer * 0.72);
+        const p = heart2D(t, scale);
+
+        const thickness = c.scale * 7.0 * (1 - layer * 0.60);
+        const z = (Math.random() - 0.5) * thickness;
+
+        heart.push({
+          x: p.x,
+          y: p.y,
+          z,
+          baseSize: 1.0 + Math.random() * 2.1,
+          hue: Math.random() > 0.25 ? 330 + Math.random() * 28 : 258 + Math.random() * 24,
+          alpha: 0.44 + Math.random() * 0.56,
+          phase: Math.random() * Math.PI * 2
+        });
+      }
+    }
+
+    function makeRings() {
+      rings = [];
+
+      for (let i = 0; i < 5; i++) {
+        rings.push({
+          radius: Math.min(w, h) * (0.18 + i * 0.052),
+          tilt: 0.58 + i * 0.08,
+          speed: 0.00032 + i * 0.00006,
+          phase: Math.random() * Math.PI * 2,
+          alpha: 0.13 - i * 0.012
         });
       }
     }
@@ -633,6 +544,7 @@
       function type() {
         poem.textContent = text.slice(0, i);
         i++;
+
         if (i <= text.length) {
           setTimeout(type, CONFIG.TYPE_SPEED);
         }
@@ -654,7 +566,9 @@
       sceneTwo.classList.add("show");
 
       resize();
-      burst(w * 0.5, h * 0.34, isMobile() ? 44 : 62);
+
+      const c = heartCenter();
+      burst(c.x, c.y, isMobile() ? 58 : 84);
 
       setTimeout(startPoem, 450);
       requestAnimationFrame(draw);
@@ -671,19 +585,27 @@
     function burst(x, y, count) {
       for (let i = 0; i < count; i++) {
         const ang = Math.random() * Math.PI * 2;
-        const speed = 1.2 + Math.random() * 3.8;
+        const speed = 1.4 + Math.random() * 4.4;
+
         sparks.push({
           x,
           y,
           vx: Math.cos(ang) * speed,
           vy: Math.sin(ang) * speed,
           life: 1,
-          decay: 0.018 + Math.random() * 0.014,
-          r: 1.1 + Math.random() * 2.5,
-          hue: Math.random() > 0.35 ? 325 + Math.random() * 36 : 250 + Math.random() * 40
+          decay: 0.016 + Math.random() * 0.014,
+          r: 1.0 + Math.random() * 2.8,
+          hue: Math.random() > 0.4 ? 330 + Math.random() * 36 : 255 + Math.random() * 38
         });
       }
     }
+
+    sceneTwo.addEventListener("click", e => burst(e.clientX, e.clientY, isMobile() ? 38 : 58));
+
+    sceneTwo.addEventListener("touchstart", e => {
+      const t = e.touches[0];
+      if (t) burst(t.clientX, t.clientY, isMobile() ? 38 : 58);
+    }, { passive: true });
 
     function updatePointer(e) {
       const p = e.touches ? e.touches[0] : e;
@@ -699,12 +621,6 @@
       pointer.y = -9999;
     }
 
-    sceneTwo.addEventListener("click", e => burst(e.clientX, e.clientY, isMobile() ? 36 : 52));
-    sceneTwo.addEventListener("touchstart", e => {
-      const t = e.touches[0];
-      if (t) burst(t.clientX, t.clientY, isMobile() ? 36 : 52);
-    }, { passive: true });
-
     document.addEventListener("mousemove", updatePointer, { passive: true });
     document.addEventListener("touchmove", updatePointer, { passive: true });
     document.addEventListener("mouseleave", clearPointer);
@@ -718,26 +634,59 @@
       if (!document.hidden && opened) requestAnimationFrame(draw);
     });
 
+    function rotate3D(p, ax, ay, az) {
+      let x = p.x;
+      let y = p.y;
+      let z = p.z;
+
+      let cy = Math.cos(ay), sy = Math.sin(ay);
+      let x1 = x * cy + z * sy;
+      let z1 = -x * sy + z * cy;
+
+      let cx = Math.cos(ax), sx = Math.sin(ax);
+      let y2 = y * cx - z1 * sx;
+      let z2 = y * sx + z1 * cx;
+
+      let cz = Math.cos(az), sz = Math.sin(az);
+      let x3 = x1 * cz - y2 * sz;
+      let y3 = x1 * sz + y2 * cz;
+
+      return { x: x3, y: y3, z: z2 };
+    }
+
     function draw(time) {
       if (document.hidden || !opened) return;
 
       ctx.clearRect(0, 0, w, h);
 
-      const cx = w / 2;
-      const cy = h / 2;
+      const c = heartCenter();
 
-      const bg = ctx.createRadialGradient(cx, cy, 20, cx, cy, Math.max(w, h) * 0.72);
-      bg.addColorStop(0, "rgba(255,79,163,0.11)");
-      bg.addColorStop(0.42, "rgba(140,99,255,0.08)");
-      bg.addColorStop(1, "rgba(5,1,10,0.72)");
-      ctx.fillStyle = bg;
-      ctx.fillRect(0, 0, w, h);
-
+      drawBackground(c);
       drawStars(time);
-      drawRings(time);
+      drawRings(time, c);
+      draw3DHeart(time, c);
       drawSparks();
 
       requestAnimationFrame(draw);
+    }
+
+    function drawBackground(c) {
+      const bg = ctx.createRadialGradient(
+        c.x,
+        c.y,
+        20,
+        c.x,
+        c.y,
+        Math.max(w, h) * 0.72
+      );
+
+      bg.addColorStop(0, "rgba(255,79,163,0.16)");
+      bg.addColorStop(0.22, "rgba(150,95,255,0.10)");
+      bg.addColorStop(0.54, "rgba(20,10,40,0.10)");
+      bg.addColorStop(1, "rgba(3,0,9,0.78)");
+
+      ctx.fillStyle = bg;
+      ctx.fillRect(0, 0, w, h);
     }
 
     function drawStars(time) {
@@ -745,9 +694,9 @@
       ctx.globalCompositeOperation = "lighter";
 
       for (const s of stars) {
-        s.y += s.s * 0.12;
-        if (s.y > h + 4) {
-          s.y = -4;
+        s.y += s.vy;
+        if (s.y > h + 5) {
+          s.y = -5;
           s.x = Math.random() * w;
         }
 
@@ -761,32 +710,116 @@
       ctx.restore();
     }
 
-    function drawRings(time) {
-      const cx = w / 2;
-      const cy = h * 0.34;
+    function drawRings(time, c) {
+      ctx.save();
+      ctx.globalCompositeOperation = "lighter";
+
+      for (let i = 0; i < rings.length; i++) {
+        const r = rings[i];
+        const rot = time * r.speed + r.phase;
+
+        ctx.strokeStyle = i % 2 === 0
+          ? `rgba(255, 135, 205, ${r.alpha})`
+          : `rgba(158, 125, 255, ${r.alpha})`;
+
+        ctx.lineWidth = i === 0 ? 1.45 : 1;
+        ctx.beginPath();
+        ctx.ellipse(
+          c.x,
+          c.y,
+          r.radius * 1.22,
+          r.radius * 0.35,
+          rot,
+          0,
+          Math.PI * 2
+        );
+        ctx.stroke();
+
+        const dotX = c.x + Math.cos(rot * 2.2 + i) * r.radius * 1.22;
+        const dotY = c.y + Math.sin(rot * 2.2 + i) * r.radius * 0.35;
+
+        ctx.fillStyle = "rgba(255,235,247,.82)";
+        ctx.beginPath();
+        ctx.arc(dotX, dotY, 2.0, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      ctx.restore();
+    }
+
+    function draw3DHeart(time, c) {
+      const ax = Math.sin(time * 0.0011) * 0.18;
+      const ay = time * 0.00115;
+      const az = Math.sin(time * 0.0008) * 0.10;
+      const pulse = 1 + Math.sin(time * 0.0032) * 0.045;
+      const perspective = Math.min(w, h) * 2.35;
+
+      const projected = [];
+
+      for (const p of heart) {
+        const r = rotate3D(p, ax, ay, az);
+        const z = r.z + c.scale * 9.0;
+        const depth = perspective / (perspective + z);
+
+        let x = c.x + r.x * pulse * depth;
+        let y = c.y + r.y * pulse * depth;
+
+        if (pointer.active) {
+          const dx = x - pointer.x;
+          const dy = y - pointer.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist > 0 && dist < 95) {
+            const force = (95 - dist) / 95;
+            x += (dx / dist) * force * 15;
+            y += (dy / dist) * force * 15;
+          }
+        }
+
+        projected.push({
+          x,
+          y,
+          z: r.z,
+          size: p.baseSize * depth * (1.0 + Math.sin(time * 0.004 + p.phase) * 0.13),
+          alpha: p.alpha * (0.48 + depth * 0.58),
+          hue: p.hue,
+          front: r.z > 0
+        });
+      }
+
+      projected.sort((a, b) => a.z - b.z);
 
       ctx.save();
       ctx.globalCompositeOperation = "lighter";
 
-      for (let i = 0; i < 4; i++) {
-        const radius = Math.min(w, h) * (0.16 + i * 0.06);
-        const rot = time * (0.00032 + i * 0.00005);
-        ctx.strokeStyle = i % 2 === 0
-          ? `rgba(255,140,205,${0.14 - i * 0.018})`
-          : `rgba(150,115,255,${0.13 - i * 0.016})`;
-        ctx.lineWidth = i === 0 ? 1.4 : 1;
-        ctx.beginPath();
-        ctx.ellipse(cx, cy, radius * 1.35, radius * 0.42, rot, 0, Math.PI * 2);
-        ctx.stroke();
+      const glow = ctx.createRadialGradient(c.x, c.y, 1, c.x, c.y, c.scale * 9.4);
+      glow.addColorStop(0, "rgba(255,85,170,0.28)");
+      glow.addColorStop(0.38, "rgba(255,85,170,0.12)");
+      glow.addColorStop(1, "rgba(255,85,170,0)");
+      ctx.fillStyle = glow;
+      ctx.beginPath();
+      ctx.arc(c.x, c.y, c.scale * 9.4, 0, Math.PI * 2);
+      ctx.fill();
 
-        const dotAngle = rot * 2 + i;
-        const dx = Math.cos(dotAngle) * radius * 1.35;
-        const dy = Math.sin(dotAngle) * radius * 0.42;
-        ctx.fillStyle = "rgba(255,220,240,.82)";
+      for (const p of projected) {
+        const light = p.front ? 72 : 55;
+        ctx.fillStyle = `hsla(${p.hue}, 100%, ${light}%, ${p.alpha})`;
         ctx.beginPath();
-        ctx.arc(cx + dx, cy + dy, 2.0, 0, Math.PI * 2);
+        ctx.arc(p.x, p.y, Math.max(0.55, p.size), 0, Math.PI * 2);
         ctx.fill();
       }
+
+      /*
+        额外高光，让它更像立体水晶心。
+      */
+      ctx.fillStyle = "rgba(255,255,255,.78)";
+      ctx.beginPath();
+      ctx.arc(c.x - c.scale * 2.1, c.y - c.scale * 4.0, c.scale * 0.42, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = "rgba(255,255,255,.38)";
+      ctx.beginPath();
+      ctx.arc(c.x - c.scale * 1.25, c.y - c.scale * 3.20, c.scale * 0.20, 0, Math.PI * 2);
+      ctx.fill();
 
       ctx.restore();
     }
@@ -807,7 +840,7 @@
           continue;
         }
 
-        ctx.fillStyle = `hsla(${p.hue},100%,70%,${p.life})`;
+        ctx.fillStyle = `hsla(${p.hue}, 100%, 70%, ${p.life})`;
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
         ctx.fill();
